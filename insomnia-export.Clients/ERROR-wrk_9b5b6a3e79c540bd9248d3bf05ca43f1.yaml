@@ -1,0 +1,40 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: ERROR
+meta:
+  id: wrk_9b5b6a3e79c540bd9248d3bf05ca43f1
+  created: 1789481277818
+  modified: 1789481277818
+  description: ""
+collection:
+  - url: http://localhost:3080/clSDF
+    name: "404"
+    meta:
+      id: req_574167428b924eeab84eacf82fe04b89
+      created: 1789481280145
+      modified: 1789481309440
+      isPrivate: false
+      description: ""
+      sortKey: -1789481280145
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_220b551b2ce82e11078a09014fa728d0e7119d55
+    created: 1789481277820
+    modified: 1789481277820
+environments:
+  name: Base Environment
+  meta:
+    id: env_220b551b2ce82e11078a09014fa728d0e7119d55
+    created: 1789481277819
+    modified: 1789481277819
+    isPrivate: false

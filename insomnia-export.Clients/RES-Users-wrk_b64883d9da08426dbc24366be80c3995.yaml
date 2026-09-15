@@ -1,0 +1,150 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: RES Users
+meta:
+  id: wrk_b64883d9da08426dbc24366be80c3995
+  created: 1789479713327
+  modified: 1789479782739
+  description: ""
+collection:
+  - url: http://localhost:3080/clients
+    name: ALL
+    meta:
+      id: req_64a8b281156e4f6897dbb05b4c87e322
+      created: 1789479720029
+      modified: 1789481303436
+      isPrivate: false
+      description: ""
+      sortKey: -1789479720029
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3080/clients/9
+    name: SINGLE
+    meta:
+      id: req_d611a47296214a38b0d7a8131ad40ffb
+      created: 1789481218276
+      modified: 1789485223729
+      isPrivate: false
+      description: ""
+      sortKey: -1789481218276
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3080/clients/11
+    name: USER not found
+    meta:
+      id: req_8927e18f5efc425c84ddb05f7e2e1dc6
+      created: 1789481257542
+      modified: 1789483568698
+      isPrivate: false
+      description: ""
+      sortKey: -1789481257542
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3080/clients
+    name: ADD user
+    meta:
+      id: req_7c74b6269e7a43a380992d3fdde19066
+      created: 1789483695246
+      modified: 1789484760162
+      isPrivate: false
+      description: ""
+      sortKey: -1789483695246
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "yugo",
+        	"email": "bimbada123@gmail.com",
+        	"role": "CO"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3080/clients/1
+    name: Update user
+    meta:
+      id: req_905a339be6d8428693ee83ebeea13a6f
+      created: 1789484768751
+      modified: 1789485605433
+      isPrivate: false
+      description: ""
+      sortKey: -1789484768751
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "oi"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3080/clients/1
+    name: '"DELETE" user'
+    meta:
+      id: req_f3c3c91635eb4082b774e6be8bc8fe50
+      created: 1789485595289
+      modified: 1789485733384
+      isPrivate: false
+      description: ""
+      sortKey: -1789485595289
+    method: DELETE
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a39ad21fddf8c134f8889e5faf385dd98a63ea3b
+    created: 1789479713329
+    modified: 1789479713329
+environments:
+  name: Base Environment
+  meta:
+    id: env_a39ad21fddf8c134f8889e5faf385dd98a63ea3b
+    created: 1789479713328
+    modified: 1789479713328
+    isPrivate: false
