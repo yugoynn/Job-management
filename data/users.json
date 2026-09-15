@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Administrador do Sistema",
+    "email": "admin@gestaoespacos.com",
+    "password_hash": "$2b$10$K7f9Xz1qHwN3pLm4aBcDeuJ8sQ2rTvWx5yZ0nMoP6qRsTuVwXyZ1",
+    "role": "ADMIN",
+    "cpf_cnpj": "111.222.333-44",
+    "company_id": null,
+    "created_at": "2026-01-05T08:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Mariana Costa da Silva",
+    "email": "mariana.recepcao@gestaoespacos.com",
+    "password_hash": "$2b$10$L8g0Yz2rIxO4qMn5bCdEfvK9tR3sUwXy6zA1oNpQ7rStUvWxYz2",
+    "role": "RECEPTION",
+    "cpf_cnpj": "222.333.444-55",
+    "company_id": null,
+    "created_at": "2026-01-08T09:30:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Joao Pedro Almeida",
+    "email": "joao.almeida@technova.com",
+    "password_hash": "$2b$10$M9h1Za3sJyP5rNo6cDeFgwL0uS4tVxYz7aB2pOqR8sTuVwXyZa3",
+    "role": "CLIENT",
+    "cpf_cnpj": "333.444.555-66",
+    "company_id": 1,
+    "created_at": "2026-01-12T11:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Fernanda Oliveira Lima",
+    "email": "fernanda.lima@alfaconsult.com",
+    "password_hash": "$2b$10$N0i2Ab4tKzQ6sOp7dEfGhxM1vT5uWyZa8bC3qPrS9tUvWxYzAb4",
+    "role": "CLIENT",
+    "cpf_cnpj": "444.555.666-77",
+    "company_id": 2,
+    "created_at": "2026-01-18T15:20:00Z"
+  },
+  {
+    "id": 5,
+    "name": "Ricardo Souza Mendes",
+    "email": "ricardo.mendes@verdevale.com",
+    "password_hash": "$2b$10$O1j3Bc5uLaR7tPq8eFgHiyN2wU6vXzAb9cD4rQsT0uVwXyZaBc5",
+    "role": "CLIENT",
+    "cpf_cnpj": "555.666.777-88",
+    "company_id": 3,
+    "created_at": "2026-02-03T10:45:00Z"
+  },
+  {
+    "id": 6,
+    "name": "Camila Rodrigues Ferreira",
+    "email": "camila.ferreira@studiocriativo.com",
+    "password_hash": "$2b$10$P2k4Cd6vMbS8uQr9fGhIjzO3xV7wYaBc0dE5sRtU1vWxYzaBcd6",
+    "role": "CLIENT",
+    "cpf_cnpj": "666.777.888-99",
+    "company_id": 4,
+    "created_at": "2026-02-22T13:10:00Z"
+  },
+  {
+    "id": 7,
+    "name": "Bruno Henrique Martins",
+    "email": "bruno.martins@logmais.com",
+    "password_hash": "$2b$10$Q3l5De7wNcT9vRs0gHiJkaP4yW8xZbCd1eF6tSuV2wXyZabcde7x",
+    "role": "CLIENT",
+    "cpf_cnpj": "777.888.999-00",
+    "company_id": 5,
+    "created_at": "2026-03-06T09:05:00Z"
+  },
+  {
+    "id": 8,
+    "name": "Patricia Gomes Nunes",
+    "email": "patricia.nunes@technova.com",
+    "password_hash": "$2b$10$R4m6Ef8xOdU0wSt1hIjKlbQ5zX9yAcDe2fG7uTvW3xYzabcdef8",
+    "role": "CLIENT",
+    "cpf_cnpj": "888.999.000-11",
+    "company_id": 1,
+    "created_at": "2026-03-15T16:40:00Z"
+  },
+  {
+    "id": 9,
+    "name": "Lucas Barbosa Ribeiro",
+    "email": "lucas.recepcao@gestaoespacos.com",
+    "password_hash": "$2b$10$S5n7Fg9yPeV1xTu2iJkLmcR6aY0zBdEf3gH8vUwX4yZabcdefg9",
+    "role": "RECEPTION",
+    "cpf_cnpj": "999.000.111-22",
+    "company_id": null,
+    "created_at": "2026-03-20T08:50:00Z"
+  },
+  {
+    "id": 10,
+    "name": "Amanda Carvalho Dias",
+    "email": "amanda.dias@alfaconsult.com",
+    "password_hash": "$2b$10$T6o8Gh0zQfW2yUv3jKlMndS7bZ1aCeFg4hI9wVxY5zabcdefgh0",
+    "role": "CLIENT",
+    "cpf_cnpj": "000.111.222-33",
+    "company_id": 2,
+    "created_at": "2026-04-02T14:15:00Z"
+  }
+]

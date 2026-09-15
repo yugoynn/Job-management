@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Sala de Coworking Principal",
+    "type": "COWORKING",
+    "capacity": 30,
+    "description": "Espaco aberto com estacoes de trabalho compartilhadas e internet de alta velocidade",
+    "is_active": true
+  },
+  {
+    "id": 2,
+    "name": "Laboratorio de Informatica 01",
+    "type": "LAB",
+    "capacity": 20,
+    "description": "Laboratorio com 20 computadores para desenvolvimento e treinamentos",
+    "is_active": true
+  },
+  {
+    "id": 3,
+    "name": "Sala de Reuniao Executiva",
+    "type": "MEETING_ROOM",
+    "capacity": 8,
+    "description": "Sala fechada com TV, videoconferencia e mesa para reunioes",
+    "is_active": true
+  },
+  {
+    "id": 4,
+    "name": "Sala de Reuniao Criativa",
+    "type": "MEETING_ROOM",
+    "capacity": 6,
+    "description": "Sala com quadro branco e ambiente descontraido para brainstorming",
+    "is_active": true
+  },
+  {
+    "id": 5,
+    "name": "Laboratorio de Redes",
+    "type": "LAB",
+    "capacity": 15,
+    "description": "Laboratorio equipado com racks, switches e roteadores para praticas de redes",
+    "is_active": false
+  },
+  {
+    "id": 6,
+    "name": "Coworking Silencioso",
+    "type": "COWORKING",
+    "capacity": 12,
+    "description": "Area reservada para trabalho individual que exige concentracao",
+    "is_active": true
+  }
+]
