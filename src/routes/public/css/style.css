@@ -1,0 +1,343 @@
+/* ===========================================================
+   Painel de Reservas — visual glassmorphism / Monte Fuji
+   Abas funcionando via CSS puro (radio :checked).
+   O JS dos botões CRUD fica por sua conta.
+   =========================================================== */
+
+:root {
+  --bg-card: rgba(28, 30, 33, 0.55);
+  --bg-card-soft: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --text: #ece7e0;
+  --text-dim: #a9a49c;
+  --text-faint: #7d7a74;
+  --accent: #e6d2bf;
+  --accent-ink: #2a2622;
+  --danger: #d98a86;
+  --radius: 18px;
+  --radius-sm: 11px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  color: var(--text);
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpapersden.com%2Fimage%2Fdownload%2Fmount-fuji-hd-reflection_bWhoZmyUmZqaraWkpJRoZWVlrWZrbW0.jpg&f=1&nofb=1&ipt=51035f77a2624e4745b508eed11f5d7eed738a932f34fc17ad60893a15dfb1bc");
+  background-position: center center;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================== FUNDO ===================== */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.fuji-scene {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.bg-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(20,22,24,0.45) 100%),
+    linear-gradient(180deg, rgba(20,22,24,0.18), rgba(20,22,24,0.30));
+}
+
+/* ===================== CARD ===================== */
+.card {
+  width: 100%;
+  max-width: 940px;
+  background: var(--bg-card);
+  -webkit-backdrop-filter: blur(26px) saturate(120%);
+  backdrop-filter: blur(26px) saturate(120%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 26px 26px 30px;
+  overflow: hidden;
+}
+
+/* ===================== CABEÇALHO ===================== */
+.card-head { margin-bottom: 22px; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-soft);
+  color: var(--accent);
+  flex: none;
+}
+.brand h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.brand p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ===================== ABAS (CSS-only) ===================== */
+/* os radios ficam escondidos, mas continuam controlando o estado */
+.card > input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.20);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+}
+.tab {
+  flex: 1 1 0;
+  min-width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background .18s ease, color .18s ease;
+}
+.tab svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* painéis escondidos por padrão */
+.panel { display: none; }
+
+/* mostra o painel da aba selecionada */
+#tab-empresas:checked    ~ .panels #panel-empresas,
+#tab-espacos:checked     ~ .panels #panel-espacos,
+#tab-disponiveis:checked ~ .panels #panel-disponiveis,
+#tab-reservas:checked    ~ .panels #panel-reservas,
+#tab-usuarios:checked    ~ .panels #panel-usuarios {
+  display: block;
+  animation: fade .25s ease;
+}
+
+/* destaca a aba ativa */
+#tab-empresas:checked    ~ .tabs label[for="tab-empresas"],
+#tab-espacos:checked     ~ .tabs label[for="tab-espacos"],
+#tab-disponiveis:checked ~ .tabs label[for="tab-disponiveis"],
+#tab-reservas:checked    ~ .tabs label[for="tab-reservas"],
+#tab-usuarios:checked    ~ .tabs label[for="tab-usuarios"] {
+  background: rgba(255, 255, 255, 0.90);
+  color: var(--accent-ink);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================== PAINEL ===================== */
+.panel-head { margin-bottom: 18px; }
+.panel-head h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.panel-head p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ===================== FORMULÁRIO ===================== */
+.form {
+  background: var(--bg-card-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-full { grid-column: 1 / -1; }
+.field > span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-dim);
+  letter-spacing: 0.01em;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-soft);
+  border-radius: 9px;
+  outline: none;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+textarea { resize: vertical; }
+input::placeholder, textarea::placeholder { color: var(--text-faint); }
+
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(230, 210, 191, 0.55);
+  background: rgba(0, 0, 0, 0.32);
+  box-shadow: 0 0 0 3px rgba(230, 210, 191, 0.12);
+}
+select option { color: #1c1e21; }
+
+/* datas / horas com ícone claro */
+input[type="date"], input[type="time"] { color-scheme: dark; }
+
+/* ===================== BOTÕES ===================== */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: transform .1s ease, background .16s ease, border-color .16s ease;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.13); }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent-ink);
+  border-color: transparent;
+  font-weight: 600;
+}
+.btn-primary:hover { background: #ffffff; }
+
+.btn-ghost {
+  background: transparent;
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.07); }
+
+.btn-danger {
+  color: var(--danger);
+  border-color: rgba(217, 138, 134, 0.35);
+  background: rgba(217, 138, 134, 0.08);
+}
+.btn-danger:hover { background: rgba(217, 138, 134, 0.16); }
+
+/* ===================== TABELA ===================== */
+.table-wrap {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 520px;
+}
+thead th {
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  background: rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid var(--border-soft);
+}
+tbody td {
+  padding: 13px 14px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-soft);
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: rgba(255, 255, 255, 0.03); }
+tbody .empty td {
+  text-align: center;
+  color: var(--text-faint);
+  padding: 26px 14px;
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ===================== RESPONSIVO ===================== */
+@media (max-width: 620px) {
+  .card { padding: 20px 16px 24px; }
+  .grid { grid-template-columns: 1fr; }
+  .tab span { display: none; }      /* em telas pequenas mostra só o ícone */
+  .tab { flex: 1; padding: 11px; }
+  .btn { flex: 1 1 auto; justify-content: center; }
+}

@@ -1,10 +1,18 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const users = require("./data/users.json"); // define o caminho da rota do "banco de dados". Em caso de um banco real, seria uma conexão com banco de dados na web
+const users = require("../db/users.json"); // define o caminho da rota do "banco de dados". Em caso de um banco real, seria uma conexão com banco de dados na web
 
 app.use(express.json()); // o express precisa usar a notação json nesse caso (não temos banco de dado, só jsons)
 app.use(express.static("public"));
+
+
+//definido a rota pincipal
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/", function(req, res){
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 
 
 // verbos http
@@ -26,6 +34,16 @@ app.use(express.static("public"));
 
 // app.get("/clients"); pega os clientes, para pegar um unico cliente use:
 //app.get("/clients/:id"); isso vale para todos os verbos.
+
+
+
+
+
+
+
+
+
+//REQUISIÇÕES DE TABELA USUARIOS
 
 
 //reotorna toda a tabela de clientes
@@ -85,6 +103,13 @@ app.delete("/clients/:id", function(req, res) {
     res.json(clientsFiltered); 
 });
 
+
+
+
+
+
+
+//REQUISIÇÕES DA TABELA EMPRESAS
 
 
 
