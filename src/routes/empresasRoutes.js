@@ -1,23 +1,29 @@
+// ===========================================================
+// ROTAS DE EMPRESAS
+// Tabela (banco de dados): src/db/empresas.json
+// Endereço base: /empresas
+// ===========================================================
 const express = require("express");
-const fs = require("fs");      // módulo do Node para ler e escrever arquivos
+const fs = require("fs");      // módulo do Node para ler e gravar arquivos
 const path = require("path");  // módulo do Node para montar caminhos de pastas
 
-const router = express.Router(); // um "mini servidor" só para as rotas de empresas
+const router = express.Router(); // conjunto de rotas desta entidade
 
-// caminho até o arquivo empresas.json
+// caminho do arquivo JSON que funciona como banco de dados
 const arquivo = path.join(__dirname, "..", "db", "empresas.json");
 
-// lê o arquivo e transforma o texto JSON em um array de objetos
+// lê o arquivo e devolve a lista (array) de registros
 function lerEmpresas() {
     return JSON.parse(fs.readFileSync(arquivo, "utf-8"));
 }
-// transforma o array em texto JSON e grava no arquivo
+
+// grava a lista de registros no arquivo
 function salvarEmpresas(empresas) {
     fs.writeFileSync(arquivo, JSON.stringify(empresas, null, 2));
 }
 
 
-// ===== DOCUMENTAÇÃO SWAGGER: o "molde" de uma empresa =====
+// ---------- DOCUMENTAÇÃO SWAGGER: campos enviados no cadastro (POST) e na atualização (PUT) ----------
 /**
  * @swagger
  * tags:
@@ -28,44 +34,24 @@ function salvarEmpresas(empresas) {
  *   schemas:
  *     Empresa:
  *       type: object
+ *       required: [nome, cnpj]
  *       properties:
- *         id:
- *           type: integer
- *           example: 1
- *         name:
+ *         nome:
  *           type: string
- *           example: TechNova Solucoes Digitais Ltda
+ *           example: "Acme Ltda"
  *         cnpj:
  *           type: string
- *           example: 12.345.678/0001-90
+ *           example: "11.222.333/0001-81"
  *         email:
  *           type: string
- *           example: contato@technova.com
- *         phone:
+ *           example: "contato@acme.com"
+ *         telefone:
  *           type: string
- *           example: (48) 3433-1001
- *         created_at:
- *           type: string
- *           example: 2026-01-10T10:00:00Z
- *     EmpresaInput:
- *       type: object
- *       required: [name, cnpj]
- *       properties:
- *         name:
- *           type: string
- *           example: Acme Ltda
- *         cnpj:
- *           type: string
- *           example: 11.222.333/0001-81
- *         email:
- *           type: string
- *           example: contato@acme.com
- *         phone:
- *           type: string
- *           example: (48) 3333-4444
+ *           example: "(48) 3333-4444"
  */
 
 
+// ---------- GET /empresas : lista todos ----------
 /**
  * @swagger
  * /empresas:
@@ -76,12 +62,14 @@ function salvarEmpresas(empresas) {
  *       200:
  *         description: Lista de empresas
  */
-// GET /empresas -> lista todas as empresas
 router.get("/", function (req, res) {
     const empresas = lerEmpresas();
+    empresas.sort((a, b) => a.id - b.id); // ordena pelo id
     res.json(empresas);
 });
 
+
+// ---------- GET /empresas/nome/:nome : busca por nome ----------
 /**
  * @swagger
  * /empresas/nome/{nome}:
@@ -94,26 +82,28 @@ router.get("/", function (req, res) {
  *         required: true
  *         schema:
  *           type: string
- *         example: tech
+ *         example: "tech"
  *     responses:
  *       200:
  *         description: Empresas encontradas
  *       404:
- *         description: Nenhuma empresa encontrada
+ *         description: Nenhuma empresa encontrada com esse nome
  */
-// GET /empresas/nome/:nome -> busca empresas pelo nome (pode ser só um pedaço do nome)
 router.get("/nome/:nome", function (req, res) {
     const nome = req.params.nome.toLowerCase(); // o que foi digitado, em minúsculas
 
-    const encontradas = lerEmpresas().filter(emp => emp.name.toLowerCase().includes(nome));
+    // filter devolve TODOS os registros que têm esse texto no nome
+    const encontrados = lerEmpresas().filter(e => e.nome.toLowerCase().includes(nome));
 
-    if (encontradas.length === 0) {
+    if (encontrados.length === 0) {
         return res.status(404).json({ erro: "Nenhuma empresa encontrada com esse nome" });
     }
 
-    res.json(encontradas);
+    res.json(encontrados);
 });
 
+
+// ---------- GET /empresas/data/:data : busca por data ----------
 /**
  * @swagger
  * /empresas/data/{data}:
@@ -126,26 +116,28 @@ router.get("/nome/:nome", function (req, res) {
  *         required: true
  *         schema:
  *           type: string
- *         example: 2026-01-10
+ *         example: "2026-01-10"
  *     responses:
  *       200:
- *         description: Empresas cadastradas nessa data
+ *         description: Empresas encontradas
  *       404:
  *         description: Nenhuma empresa cadastrada nessa data
  */
-// GET /empresas/data/:data -> busca empresas pela data de cadastro (formato AAAA-MM-DD)
 router.get("/data/:data", function (req, res) {
-    const data = req.params.data;
+    const data = req.params.data; // exemplo: 2026-01-10
 
-    const encontradas = lerEmpresas().filter(emp => emp.created_at.startsWith(data));
+    // startsWith confere se o campo "criado_em" começa com a data informada
+    const encontrados = lerEmpresas().filter(e => e.criado_em.startsWith(data));
 
-    if (encontradas.length === 0) {
+    if (encontrados.length === 0) {
         return res.status(404).json({ erro: "Nenhuma empresa cadastrada nessa data" });
     }
 
-    res.json(encontradas);
+    res.json(encontrados);
 });
 
+
+// ---------- GET /empresas/:id : busca por id ----------
 /**
  * @swagger
  * /empresas/{id}:
@@ -165,19 +157,21 @@ router.get("/data/:data", function (req, res) {
  *       404:
  *         description: Empresa não encontrada
  */
-// GET /empresas/:id -> busca uma empresa pelo id
 router.get("/:id", function (req, res) {
-    const id = Number(req.params.id);  // pega o id que veio na URL e transforma em número
+    const id = Number(req.params.id); // o id vem da URL como texto, então vira número
 
-    const empresa = lerEmpresas().find(emp => emp.id === id); // procura a empresa com esse id
+    // find devolve UM registro (o primeiro com esse id) ou undefined
+    const empresa = lerEmpresas().find(e => e.id === id);
 
     if (!empresa) {
-        return res.status(404).json({ erro: "Empresa não encontrada" }); // não achou: erro 404
+        return res.status(404).json({ erro: "Empresa não encontrada" });
     }
 
-    res.json(empresa); // achou: devolve a empresa
+    res.json(empresa);
 });
 
+
+// ---------- POST /empresas : cadastra ----------
 /**
  * @swagger
  * /empresas:
@@ -189,52 +183,44 @@ router.get("/:id", function (req, res) {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EmpresaInput'
+ *             $ref: '#/components/schemas/Empresa'
  *     responses:
  *       201:
  *         description: Empresa cadastrada
  *       400:
- *         description: Nome ou CNPJ não informados
- *       409:
- *         description: Já existe uma empresa com esse CNPJ
+ *         description: Nome e CNPJ são obrigatórios
  */
-// POST /empresas -> cadastra uma nova empresa
 router.post("/", function (req, res) {
-    const { name, cnpj, email, phone } = req.body; // pega os dados enviados no corpo
+    const dados = req.body; // dados enviados no corpo da requisição (JSON)
 
-    // 1. validação: nome e CNPJ são obrigatórios
-    if (!name || !cnpj) {
+    // 1. confere os campos obrigatórios
+    if (!dados.nome || !dados.cnpj) {
         return res.status(400).json({ erro: "Nome e CNPJ são obrigatórios" });
     }
 
     const empresas = lerEmpresas();
 
-    // 2. não pode repetir CNPJ
-    if (empresas.some(emp => emp.cnpj === cnpj)) {
-        return res.status(409).json({ erro: "Já existe uma empresa com esse CNPJ" });
-    }
+    // 2. gera o próximo id: maior id que existe + 1
+    const novoId = empresas.length > 0 ? Math.max(...empresas.map(e => e.id)) + 1 : 1;
 
-    // 3. gera o próximo id: maior id que existe + 1
-    const novoId = empresas.length > 0 ? Math.max(...empresas.map(emp => emp.id)) + 1 : 1;
-
-    // 4. monta a nova empresa
-    const novaEmpresa = {
+    // 3. monta o novo registro
+    const novo = {
         id: novoId,
-        name,
-        cnpj,
-        email: email || "",
-        phone: phone || "",
-        created_at: new Date().toISOString() // data e hora de agora
+        nome: dados.nome,
+        cnpj: dados.cnpj,
+        email: dados.email || "",
+        telefone: dados.telefone || "",
+        criado_em: new Date().toISOString() // data e hora de agora
     };
 
-    // 5. adiciona na lista e grava no arquivo
-    empresas.push(novaEmpresa);
+    // 4. adiciona na lista, grava no arquivo e responde 201 (criado)
+    empresas.push(novo);
     salvarEmpresas(empresas);
+    res.status(201).json(novo);
+});
 
-    // 6. responde 201 (criado) com a empresa nova
-    res.status(201).json(novaEmpresa);
-}); 
 
+// ---------- PUT /empresas/:id : atualiza ----------
 /**
  * @swagger
  * /empresas/{id}:
@@ -253,43 +239,37 @@ router.post("/", function (req, res) {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/EmpresaInput'
+ *             $ref: '#/components/schemas/Empresa'
  *     responses:
  *       200:
  *         description: Empresa atualizada
  *       404:
  *         description: Empresa não encontrada
- *       409:
- *         description: CNPJ já usado por outra empresa
  */
-// PUT /empresas/:id -> atualiza os dados de uma empresa
 router.put("/:id", function (req, res) {
     const empresas = lerEmpresas();
-    const empresa = empresas.find(emp => emp.id === Number(req.params.id));
+    const empresa = empresas.find(e => e.id === Number(req.params.id));
 
-    // 1. a empresa existe?
+    // 1. o registro existe?
     if (!empresa) {
         return res.status(404).json({ erro: "Empresa não encontrada" });
     }
 
-    const { name, cnpj, email, phone } = req.body;
+    const dados = req.body;
 
-    // 2. se mudou o CNPJ, ele não pode ser de OUTRA empresa
-    if (cnpj && empresas.some(emp => emp.cnpj === cnpj && emp.id !== empresa.id)) {
-        return res.status(409).json({ erro: "CNPJ já usado por outra empresa" });
-    }
+    // 2. troca só os campos que foram enviados
+    if (dados.nome !== undefined) empresa.nome = dados.nome;
+    if (dados.cnpj !== undefined) empresa.cnpj = dados.cnpj;
+    if (dados.email !== undefined) empresa.email = dados.email;
+    if (dados.telefone !== undefined) empresa.telefone = dados.telefone;
 
-    // 3. troca só o que foi enviado
-    if (name) empresa.name = name;
-    if (cnpj) empresa.cnpj = cnpj;
-    if (email !== undefined) empresa.email = email;
-    if (phone !== undefined) empresa.phone = phone;
-
-    // 4. grava e responde com a empresa atualizada
+    // 3. grava no arquivo e responde com o registro atualizado
     salvarEmpresas(empresas);
     res.json(empresa);
 });
 
+
+// ---------- DELETE /empresas/:id : apaga ----------
 /**
  * @swagger
  * /empresas/{id}:
@@ -302,31 +282,29 @@ router.put("/:id", function (req, res) {
  *         required: true
  *         schema:
  *           type: integer
- *         example: 6
+ *         example: 1
  *     responses:
  *       200:
  *         description: Empresa apagada (devolve a empresa removida)
  *       404:
  *         description: Empresa não encontrada
  */
-// DELETE /empresas/:id -> apaga uma empresa
 router.delete("/:id", function (req, res) {
     const empresas = lerEmpresas();
-    const empresa = empresas.find(emp => emp.id === Number(req.params.id));
+    const empresa = empresas.find(e => e.id === Number(req.params.id));
 
-    // 1. a empresa existe?
+    // 1. o registro existe?
     if (!empresa) {
         return res.status(404).json({ erro: "Empresa não encontrada" });
     }
 
-    // 2. grava a lista com todas as empresas MENOS a que vai ser apagada
-    const restantes = empresas.filter(emp => emp.id !== empresa.id);
+    // 2. filter monta a lista com todos os registros MENOS o apagado, e grava
+    const restantes = empresas.filter(e => e.id !== empresa.id);
     salvarEmpresas(restantes);
 
-    // 3. responde com a empresa que foi apagada
+    // 3. responde com o registro que foi apagado
     res.json(empresa);
 });
 
-module.exports = router; // deixa o router disponível para o index.js usar
 
-
+module.exports = router; // deixa as rotas disponíveis para o src/routes/index.js

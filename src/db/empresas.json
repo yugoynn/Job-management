@@ -1,42 +1,42 @@
 [
   {
     "id": 1,
-    "name": "TechNova Solucoes Digitais Ltda",
+    "nome": "TechNova Solucoes Digitais Ltda",
     "cnpj": "12.345.678/0001-90",
     "email": "contato@technova.com",
-    "phone": "(48) 3433-1001",
-    "created_at": "2026-01-10T10:00:00Z"
+    "telefone": "(48) 3433-1001",
+    "criado_em": "2026-01-10T10:00:00Z"
   },
   {
     "id": 2,
-    "name": "Alfa Consultoria Empresarial",
+    "nome": "Alfa Consultoria Empresarial",
     "cnpj": "23.456.789/0001-01",
     "email": "contato@alfaconsult.com",
-    "phone": "(48) 3433-2002",
-    "created_at": "2026-01-15T14:30:00Z"
+    "telefone": "(48) 3433-2002",
+    "criado_em": "2026-01-15T14:30:00Z"
   },
   {
     "id": 3,
-    "name": "Verde Vale Agronegocios",
+    "nome": "Verde Vale Agronegocios",
     "cnpj": "34.567.890/0001-12",
     "email": "contato@verdevale.com",
-    "phone": "(48) 3433-3003",
-    "created_at": "2026-02-02T09:15:00Z"
+    "telefone": "(48) 3433-3003",
+    "criado_em": "2026-02-02T09:15:00Z"
   },
   {
     "id": 4,
-    "name": "Studio Criativo Design",
+    "nome": "Studio Criativo Design",
     "cnpj": "45.678.901/0001-23",
     "email": "contato@studiocriativo.com",
-    "phone": "(48) 3433-4004",
-    "created_at": "2026-02-20T16:45:00Z"
+    "telefone": "(48) 3433-4004",
+    "criado_em": "2026-02-20T16:45:00Z"
   },
   {
     "id": 5,
-    "name": "LogMais Transportes e Logistica",
+    "nome": "LogMais Transportes e Logistica",
     "cnpj": "56.789.012/0001-34",
     "email": "contato@logmais.com",
-    "phone": "(48) 3433-5005",
-    "created_at": "2026-03-05T11:20:00Z"
+    "telefone": "(48) 3433-5005",
+    "criado_em": "2026-03-05T11:20:00Z"
   }
 ]
